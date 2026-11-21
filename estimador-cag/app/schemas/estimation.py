@@ -92,7 +92,7 @@ class EstimationResponse(BaseModel):
                 input_tokens=response.input_tokens,
                 cached_input_tokens=response.cached_input_tokens,
                 output_tokens=response.output_tokens,
-                cost_usd=result.llm_cost_usd,
+                cost_usd=None if result.llm_cost_usd is None else round(result.llm_cost_usd, 6),
             ),
             latency_ms=latency_ms,
             created_at=created_at,

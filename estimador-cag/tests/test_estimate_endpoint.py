@@ -53,7 +53,7 @@ def test_returns_details_usage_and_timing(use_provider):
         "input_tokens": 4000,
         "cached_input_tokens": 3000,
         "output_tokens": 300,
-        "cost_usd": pytest.approx((1000 * 0.15 + 3000 * 0.075 + 300 * 0.60) / 1_000_000),
+        "cost_usd": 0.000555,
     }
     assert body["latency_ms"] >= 0
     assert body["created_at"].endswith("Z")
