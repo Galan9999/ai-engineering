@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.config import get_settings
+from app.routers import estimations
 
 get_settings()
 
@@ -10,6 +11,8 @@ app = FastAPI(
     "generada por un LLM con arquitectura CAG.",
     version="0.1.0",
 )
+
+app.include_router(estimations.router, prefix="/api/v1")
 
 
 @app.get("/health")
