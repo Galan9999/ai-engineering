@@ -1,0 +1,54 @@
+id: panel-inventario-distribuidora
+title: Panel web de inventario para una distribuidora de material de oficina
+sector: distribución
+meeting_summary: |
+  Distribuidora con dos almacenes que controla el stock en hojas de cálculo compartidas y sufre roturas de
+  stock frecuentes. Piden una aplicación web interna para registrar entradas y salidas, ver el stock por
+  almacén, importar el catálogo de proveedores desde CSV y recibir un correo cuando un producto baje del
+  mínimo. Habrá tres perfiles: administración, mozos de almacén y dirección, que quiere un informe mensual
+  de rotación. No necesitan app móvil; el almacén usará tablets con el navegador.
+tasks:
+  - name: Análisis de procesos y requisitos con cada perfil
+    role: project_manager
+    hours: 24
+  - name: Diseño UI del panel (responsive para tablet)
+    role: product_designer
+    hours: 40
+  - name: API de inventario, movimientos y roles
+    role: backend
+    hours: 120
+  - name: Importación de catálogo CSV con validación de errores
+    role: backend
+    hours: 40
+  - name: Alertas de stock mínimo por correo
+    role: backend
+    hours: 24
+  - name: Frontend del panel e informe de rotación
+    role: frontend
+    hours: 110
+  - name: Pruebas funcionales y de importación
+    role: qa
+    hours: 40
+  - name: Despliegue y copias de seguridad
+    role: devops
+    hours: 16
+  - name: Gestión del proyecto y formación a usuarios
+    role: project_manager
+    hours: 30
+team:
+  - role: product_designer
+    dedication: 0.3
+  - role: backend
+  - role: frontend
+  - role: qa
+    dedication: 0.4
+  - role: devops
+    dedication: 0.1
+  - role: project_manager
+    dedication: 0.3
+duration_weeks:
+  min: 5
+  max: 6
+notes: |
+  La importación CSV es el mayor riesgo: los ficheros de cada proveedor vienen con columnas distintas.
+  Se acota a tres formatos de proveedor; formatos nuevos se cobran por separado.
