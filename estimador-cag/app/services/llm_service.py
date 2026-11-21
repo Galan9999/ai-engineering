@@ -6,6 +6,7 @@ from app.context.examples import get_examples, get_rate_card
 from app.context.models import Estimation, RateCard
 from app.services.pricing import get_pricing
 from app.services.prompt import (
+    ESTIMATION_PARAMS,
     TOOL_DESCRIPTION,
     TOOL_NAME,
     build_system_prompt,
@@ -59,6 +60,7 @@ async def generate_estimation(
         system=build_system_prompt(get_examples(), rate_card),
         user=build_user_message(transcription),
         tool=tool,
+        params=ESTIMATION_PARAMS,
     )
 
     if response.truncated:

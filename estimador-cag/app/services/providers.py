@@ -17,6 +17,12 @@ class ProviderError(RuntimeError):
 
 
 @dataclass(frozen=True)
+class GenerationParams:
+    max_tokens: int
+    temperature: float | None = None
+
+
+@dataclass(frozen=True)
 class ToolSpec:
     name: str
     description: str
@@ -38,21 +44,23 @@ class ProviderResponse:
 class LLMProvider(Protocol):
     name: str
 
-    async def call_tool(self, system: str, user: str, tool: ToolSpec) -> ProviderResponse: ...
+    async def call_tool(
+        self, system: str, user: str, tool: ToolSpec, params: GenerationParams
+    ) -> ProviderResponse: ...
 
 
 class OpenAIProvider:
     name = "openai"
 
-    def __init__(self, api_key: str, model: str, temperature: float, max_tokens: int):
+    def __init__(self, api_key: str, model: str):
         self._client = AsyncOpenAI(api_key=api_key)
         self._model = model
-        self._temperature = temperature
-        self._max_tokens = max_tokens
 
-    async def call_tool(self, system: str, user: str, tool: ToolSpec) -> ProviderResponse:
+    async def call_tool(
+        self, system: str, user: str, tool: ToolSpec, params: GenerationParams
+    ) -> ProviderResponse:
         try:
-            response = await self._create(system, user, tool)
+            response = await self._create(system, user, tool, params)
         except openai.APIError as error:
             raise ProviderError(f"openai: {error}") from error
         choice = response.choices[0]
@@ -73,7 +81,7 @@ class OpenAIProvider:
             cached_input_tokens=(details.cached_tokens or 0) if details else 0,
         )
 
-    async def _create(self, system: str, user: str, tool: ToolSpec):
+    async def _create(self, system: str, user: str, tool: ToolSpec, params: GenerationParams):
         return await self._client.chat.completions.create(
             model=self._model,
             messages=[
@@ -91,22 +99,23 @@ class OpenAIProvider:
                 }
             ],
             tool_choice={"type": "function", "function": {"name": tool.name}},
-            temperature=self._temperature,
-            max_tokens=self._max_tokens,
+            temperature=params.temperature,
+            max_tokens=params.max_tokens,
         )
 
 
 class AnthropicProvider:
     name = "anthropic"
 
-    def __init__(self, api_key: str, model: str, max_tokens: int):
+    def __init__(self, api_key: str, model: str):
         self._client = AsyncAnthropic(api_key=api_key)
         self._model = model
-        self._max_tokens = max_tokens
 
-    async def call_tool(self, system: str, user: str, tool: ToolSpec) -> ProviderResponse:
+    async def call_tool(
+        self, system: str, user: str, tool: ToolSpec, params: GenerationParams
+    ) -> ProviderResponse:
         try:
-            response = await self._create(system, user, tool)
+            response = await self._create(system, user, tool, params)
         except anthropic.APIError as error:
             raise ProviderError(f"anthropic: {error}") from error
         arguments = None
@@ -126,10 +135,10 @@ class AnthropicProvider:
             cached_input_tokens=cache_read,
         )
 
-    async def _create(self, system: str, user: str, tool: ToolSpec):
+    async def _create(self, system: str, user: str, tool: ToolSpec, params: GenerationParams):
         return await self._client.messages.create(
             model=self._model,
-            max_tokens=self._max_tokens,
+            max_tokens=params.max_tokens,
             system=system,
             messages=[{"role": "user", "content": user}],
             tools=[
@@ -157,14 +166,11 @@ def build_provider(settings: Settings) -> LLMProvider:
         return AnthropicProvider(
             api_key=settings.anthropic_api_key,
             model=settings.llm_model,
-            max_tokens=settings.llm_max_tokens,
         )
     assert settings.openai_api_key
     return OpenAIProvider(
         api_key=settings.openai_api_key,
         model=settings.llm_model,
-        temperature=settings.llm_temperature,
-        max_tokens=settings.llm_max_tokens,
     )
 
 

@@ -3,11 +3,13 @@ from collections.abc import Iterable
 from typing import Any
 
 from app.context.models import Estimation, EstimationExample, RateCard
+from app.services.providers import GenerationParams
 
 TOOL_NAME = "submit_estimation"
 TOOL_DESCRIPTION = (
     "Entrega la estimación del proyecto con su desglose de tareas, equipo y duración."
 )
+ESTIMATION_PARAMS = GenerationParams(max_tokens=3000, temperature=0.3)
 
 
 def estimation_schema(rate_card: RateCard) -> dict[str, Any]:

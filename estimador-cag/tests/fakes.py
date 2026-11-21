@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.services.providers import ProviderError, ProviderResponse, ToolSpec
+from app.services.providers import GenerationParams, ProviderError, ProviderResponse, ToolSpec
 
 GOOD_ESTIMATION = {
     "title": "Web de reservas para una escuela de surf",
@@ -30,8 +30,10 @@ class FakeProvider:
         self.error = error
         self.calls: list[dict[str, Any]] = []
 
-    async def call_tool(self, system: str, user: str, tool: ToolSpec) -> ProviderResponse:
-        self.calls.append({"system": system, "user": user, "tool": tool})
+    async def call_tool(
+        self, system: str, user: str, tool: ToolSpec, params: GenerationParams
+    ) -> ProviderResponse:
+        self.calls.append({"system": system, "user": user, "tool": tool, "params": params})
         if self.error:
             raise self.error
         return ProviderResponse(

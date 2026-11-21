@@ -7,8 +7,6 @@ ENV_EXAMPLE_KEYS = [
     "LLM_PROVIDER",
     "LLM_MODEL",
     "ANTHROPIC_API_KEY",
-    "LLM_TEMPERATURE",
-    "LLM_MAX_TOKENS",
 ]
 
 
@@ -22,8 +20,6 @@ def test_empty_variables_fall_back_to_defaults(monkeypatch, tmp_path):
 
     assert settings.llm_provider == "openai"
     assert settings.llm_model == "gpt-4o-mini"
-    assert settings.llm_temperature == 0.3
-    assert settings.llm_max_tokens == 3000
 
 
 def test_empty_api_key_still_fails_fast(monkeypatch, tmp_path):

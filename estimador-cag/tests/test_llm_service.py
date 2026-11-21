@@ -5,7 +5,12 @@ import pytest
 from app.context.examples import get_examples, get_rate_card
 from app.services.llm_service import LLMOutputError, generate_estimation
 from app.services.markdown import render_markdown
-from app.services.prompt import build_system_prompt, build_user_message, estimation_schema
+from app.services.prompt import (
+    ESTIMATION_PARAMS,
+    build_system_prompt,
+    build_user_message,
+    estimation_schema,
+)
 from tests.fakes import GOOD_ESTIMATION, FakeProvider
 
 TRANSCRIPTION = "El cliente quiere una web de reservas para su escuela de surf con pagos online."
@@ -54,6 +59,7 @@ def test_service_sends_system_and_user_and_computes_costs():
     [call] = provider.calls
     assert "<examples>" in call["system"]
     assert TRANSCRIPTION in call["user"]
+    assert call["params"] == ESTIMATION_PARAMS
     assert result.total_hours == 110
     assert result.total_cost == 30 * 50 + 80 * 65
     assert result.warnings == []
