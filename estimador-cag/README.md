@@ -16,13 +16,45 @@ uv run uvicorn app.main:app --reload
 - Salud: `GET http://localhost:8000/health`
 - Documentación: http://localhost:8000/docs
 
+## Uso
+
+```bash
+curl -X POST http://localhost:8000/api/v1/estimate \
+  -H "Content-Type: application/json" \
+  -d '{"transcription": "En la reunión con el equipo de marketing, el cliente explicó que necesita una landing page con formulario de contacto, integración con su CRM actual (HubSpot), y una sección de blog con editor WYSIWYG. El plazo ideal sería tenerlo listo en 4 semanas. El diseño ya existe en Figma."}'
+```
+
+La respuesta trae `estimation` (Markdown), `model` y `provider`, y además `details` (tareas con coste,
+equipo, duración y totales), `warnings` (incoherencias de capacidad), `usage` (tokens y coste en USD),
+`latency_ms` y `created_at`. Errores: `422` si la transcripción no es válida (50-20.000 caracteres) y
+`502` si el modelo o el proveedor fallan.
+
+## Cómo funciona
+
+1. `context/` carga y valida al arrancar las estimaciones de referencia (`data/examples/*.yaml`) y las
+   tarifas por rol (`data/rates.yaml`).
+2. `services/prompt.py` monta el system prompt con los ejemplos en `<example>` y la transcripción como
+   mensaje de usuario.
+3. `services/providers.py` llama a OpenAI o Anthropic (`LLM_PROVIDER`) forzando la herramienta
+   `submit_estimation`, cuyo esquema es el modelo `Estimation`.
+4. `services/llm_service.py` valida la respuesta con Pydantic; horas, costes y totales los calcula el
+   código, no el modelo. `services/pricing.py` calcula el coste de la llamada con `data/pricing.yaml`.
+
 ## Estructura
 
 ```
 app/
 ├── main.py                  app, routers y /health
 ├── config.py                configuración con pydantic-settings (falla si falta la key)
+├── schemas/estimation.py    contratos de entrada y salida de la API
 ├── routers/estimations.py   POST /api/v1/estimate
-├── services/llm_service.py  prompt + contexto + llamada al LLM
-└── context/examples.py      estimaciones de referencia (contexto CAG)
+├── services/                prompt, adapter de proveedores, servicio, Markdown y precios
+└── context/                 modelos, loader y datos YAML (ejemplos y tarifas)
 ```
+
+## Mejoras pendientes
+
+- **Productividad con IA.** Los ejemplos reflejan horas de proyectos hechos sin agentes de IA y hoy se
+  sobrestimaría. Propuesta: un campo `delivery: traditional | ai_assisted` en cada ejemplo (el hecho) y un
+  factor `ai_productivity` por rol en `rates.yaml` (la suposición) que ajuste las horas de los ejemplos
+  `traditional` al cargarlos. Con RAG, `delivery` y la fecha del proyecto servirán para filtrar la búsqueda.
