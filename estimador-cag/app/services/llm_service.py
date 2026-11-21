@@ -4,6 +4,7 @@ from pydantic import ValidationError
 
 from app.context.examples import get_examples, get_rate_card
 from app.context.models import Estimation, RateCard
+from app.services.pricing import get_pricing
 from app.services.prompt import (
     TOOL_DESCRIPTION,
     TOOL_NAME,
@@ -32,6 +33,17 @@ class EstimationResult:
     @property
     def total_cost(self) -> float:
         return self.estimation.total_cost(self.rate_card)
+
+    @property
+    def llm_cost_usd(self) -> float | None:
+        price = get_pricing().price_for(self.response.model)
+        if price is None:
+            return None
+        return price.cost(
+            input_tokens=self.response.input_tokens,
+            cached_input_tokens=self.response.cached_input_tokens,
+            output_tokens=self.response.output_tokens,
+        )
 
 
 async def generate_estimation(
