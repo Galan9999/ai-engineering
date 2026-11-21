@@ -47,3 +47,19 @@ def test_cost_charges_cached_tokens_at_the_cached_rate():
     cost = PRICE.cost(input_tokens=4000, cached_input_tokens=3000, output_tokens=500)
 
     assert cost == pytest.approx((1000 * 0.15 + 3000 * 0.075 + 500 * 0.60) / 1_000_000)
+
+
+def test_cache_writes_use_the_write_rate_or_fall_back_to_input():
+    with_write = ModelPrice(
+        provider="anthropic",
+        input_per_mtok=1.0,
+        cached_input_per_mtok=0.1,
+        cache_write_per_mtok=1.25,
+        output_per_mtok=5.0,
+        source="https://example.com",
+    )
+
+    assert with_write.cost(6000, 0, 1000, cache_write_tokens=5000) == pytest.approx(
+        (1000 * 1.0 + 5000 * 1.25 + 1000 * 5.0) / 1_000_000
+    )
+    assert PRICE.cost(4000, 0, 0, cache_write_tokens=4000) == pytest.approx(4000 * 0.15 / 1_000_000)

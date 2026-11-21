@@ -46,6 +46,7 @@ class EstimationDetails(BaseModel):
 class Usage(BaseModel):
     input_tokens: int
     cached_input_tokens: int
+    cache_write_tokens: int
     output_tokens: int
     cost_usd: float | None
 
@@ -91,6 +92,7 @@ class EstimationResponse(BaseModel):
             usage=Usage(
                 input_tokens=response.input_tokens,
                 cached_input_tokens=response.cached_input_tokens,
+                cache_write_tokens=response.cache_write_tokens,
                 output_tokens=response.output_tokens,
                 cost_usd=None if result.llm_cost_usd is None else round(result.llm_cost_usd, 6),
             ),

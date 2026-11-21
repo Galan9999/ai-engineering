@@ -19,14 +19,23 @@ class ModelPrice(BaseModel):
     provider: Literal["openai", "anthropic"]
     input_per_mtok: NonNegativeFloat
     cached_input_per_mtok: NonNegativeFloat
+    cache_write_per_mtok: NonNegativeFloat | None = None
     output_per_mtok: NonNegativeFloat
     source: str
 
-    def cost(self, input_tokens: int, cached_input_tokens: int, output_tokens: int) -> float:
-        uncached = max(input_tokens - cached_input_tokens, 0)
+    def cost(
+        self,
+        input_tokens: int,
+        cached_input_tokens: int,
+        output_tokens: int,
+        cache_write_tokens: int = 0,
+    ) -> float:
+        uncached = max(input_tokens - cached_input_tokens - cache_write_tokens, 0)
+        write_rate = self.cache_write_per_mtok or self.input_per_mtok
         return (
             uncached * self.input_per_mtok
             + cached_input_tokens * self.cached_input_per_mtok
+            + cache_write_tokens * write_rate
             + output_tokens * self.output_per_mtok
         ) / PER_MILLION
 

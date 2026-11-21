@@ -44,6 +44,7 @@ class EstimationResult:
             input_tokens=self.response.input_tokens,
             cached_input_tokens=self.response.cached_input_tokens,
             output_tokens=self.response.output_tokens,
+            cache_write_tokens=self.response.cache_write_tokens,
         )
 
 

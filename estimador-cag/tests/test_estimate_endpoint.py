@@ -52,6 +52,7 @@ def test_returns_details_usage_and_timing(use_provider):
     assert body["usage"] == {
         "input_tokens": 4000,
         "cached_input_tokens": 3000,
+        "cache_write_tokens": 0,
         "output_tokens": 300,
         "cost_usd": 0.000555,
     }

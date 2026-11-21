@@ -39,6 +39,7 @@ class ProviderResponse:
     input_tokens: int
     output_tokens: int
     cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
 
 
 class LLMProvider(Protocol):
@@ -124,15 +125,17 @@ class AnthropicProvider:
                 arguments = block.input if isinstance(block.input, dict) else None
         usage = response.usage
         cache_read = usage.cache_read_input_tokens or 0
+        cache_write = usage.cache_creation_input_tokens or 0
         return ProviderResponse(
             arguments=arguments,
             provider=self.name,
             model=response.model,
             stop_reason=response.stop_reason,
             truncated=response.stop_reason == "max_tokens",
-            input_tokens=usage.input_tokens + cache_read + (usage.cache_creation_input_tokens or 0),
+            input_tokens=usage.input_tokens + cache_read + cache_write,
             output_tokens=usage.output_tokens,
             cached_input_tokens=cache_read,
+            cache_write_tokens=cache_write,
         )
 
     async def _create(self, system: str, user: str, tool: ToolSpec, params: GenerationParams):
@@ -149,6 +152,7 @@ class AnthropicProvider:
                 }
             ],
             tool_choice={"type": "tool", "name": tool.name},
+            cache_control={"type": "ephemeral"},
         )
 
 
