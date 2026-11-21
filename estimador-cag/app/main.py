@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 
+from app.config import get_settings
+
+get_settings()
+
 app = FastAPI(
     title="Estimador CAG",
     description="Recibe la transcripción de una reunión y devuelve una estimación de software "
