@@ -58,3 +58,7 @@ app/
   sobrestimaría. Propuesta: un campo `delivery: traditional | ai_assisted` en cada ejemplo (el hecho) y un
   factor `ai_productivity` por rol en `rates.yaml` (la suposición) que ajuste las horas de los ejemplos
   `traditional` al cargarlos. Con RAG, `delivery` y la fecha del proyecto servirán para filtrar la búsqueda.
+- **Autocorrección de la estimación.** Hoy, si el equipo propuesto no llega a las horas de algún rol, la
+  respuesta lo devuelve en `warnings`. Propuesta: cuando haya avisos, reenviar al modelo su estimación con
+  los avisos para que la corrija (máximo un reintento), decidiendo él si añade personas o alarga el plazo.
+  Es el patrón validar → feedback → reintentar: el código comprueba y el modelo corrige.
