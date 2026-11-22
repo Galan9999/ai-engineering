@@ -31,7 +31,9 @@ class ModelPrice(BaseModel):
         cache_write_tokens: int = 0,
     ) -> float:
         uncached = max(input_tokens - cached_input_tokens - cache_write_tokens, 0)
-        write_rate = self.cache_write_per_mtok or self.input_per_mtok
+        write_rate = (
+            self.input_per_mtok if self.cache_write_per_mtok is None else self.cache_write_per_mtok
+        )
         return (
             uncached * self.input_per_mtok
             + cached_input_tokens * self.cached_input_per_mtok

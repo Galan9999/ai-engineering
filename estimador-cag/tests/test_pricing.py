@@ -65,3 +65,9 @@ def test_cache_writes_use_the_write_rate_or_fall_back_to_input():
         (1000 * 1.0 + 5000 * 1.25 + 1000 * 5.0) / 1_000_000
     )
     assert PRICE.cost(4000, 0, 0, cache_write_tokens=4000) == pytest.approx(4000 * 0.15 / 1_000_000)
+
+
+def test_free_cache_writes_are_not_charged_at_the_input_rate():
+    free_write = PRICE.model_copy(update={"cache_write_per_mtok": 0.0})
+
+    assert free_write.cost(4000, 0, 0, cache_write_tokens=4000) == 0
