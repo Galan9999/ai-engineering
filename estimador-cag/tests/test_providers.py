@@ -53,7 +53,7 @@ def test_anthropic_request_caches_the_system_prompt_and_forces_the_tool(monkeypa
     ]
     assert messages.kwargs["messages"] == [{"role": "user", "content": "USER"}]
     assert messages.kwargs["max_tokens"] == 3000
-    assert "temperature" not in messages.kwargs
+    assert messages.kwargs["temperature"] == 0.3
 
 
 def test_anthropic_usage_counts_cached_tokens_in_the_input(monkeypatch):
