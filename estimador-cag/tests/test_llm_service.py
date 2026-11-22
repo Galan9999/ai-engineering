@@ -117,5 +117,15 @@ def test_markdown_shows_a_single_number_when_min_equals_max():
     )
 
 
+def test_markdown_escapes_pipes_and_line_breaks_in_task_names():
+    tasks = [dict(task) for task in GOOD_ESTIMATION["tasks"]]
+    tasks[0]["name"] = "Integración CRM | HubSpot\ny webhooks"
+    result = run(FakeProvider({**GOOD_ESTIMATION, "tasks": tasks}))
+
+    markdown = render_markdown(result.estimation, result.rate_card)
+
+    assert "| Integración CRM \\| HubSpot y webhooks |" in markdown
+
+
 def test_llm_cost_is_none_for_a_model_without_price():
     assert run(FakeProvider(GOOD_ESTIMATION)).llm_cost_usd is None

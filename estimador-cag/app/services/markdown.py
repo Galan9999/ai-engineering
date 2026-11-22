@@ -5,6 +5,10 @@ def _number(value: float) -> str:
     return f"{value:,.0f}".replace(",", ".")
 
 
+def _cell(text: str) -> str:
+    return " ".join(text.split()).replace("|", "\\|")
+
+
 def render_markdown(estimation: Estimation, rate_card: RateCard) -> str:
     currency = rate_card.currency
     lines = [
@@ -17,7 +21,7 @@ def render_markdown(estimation: Estimation, rate_card: RateCard) -> str:
     ]
     for task in estimation.tasks:
         lines.append(
-            f"| {task.name} | {task.role} | {_number(task.hours)} | "
+            f"| {_cell(task.name)} | {task.role} | {_number(task.hours)} | "
             f"{_number(task.cost(rate_card))} {currency} |"
         )
     lines += [
