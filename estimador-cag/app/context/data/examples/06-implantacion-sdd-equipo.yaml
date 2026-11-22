@@ -1,0 +1,47 @@
+id: implantacion-sdd-equipo
+title: Implantación de desarrollo guiado por specs con agentes de IA en un equipo
+sector: seguros
+meeting_summary: |
+  Aseguradora con un equipo interno de ocho desarrolladores que ya usa asistentes de IA, cada uno a su
+  manera, con resultados irregulares y PRs enormes difíciles de revisar. Quieren adoptar un flujo común de
+  spec-driven development: escribir la spec antes del código, que los agentes trabajen a partir de ella y
+  que las revisiones comprueben el código contra la spec. Piden plantillas, configuración de los agentes en
+  sus repositorios, una revisión automática en CI y acompañamiento hasta que el equipo trabaje solo.
+tasks:
+  - name: Diagnóstico del flujo actual del equipo y de sus repositorios
+    role: tech_lead
+    hours: 24
+  - name: Plantillas de spec, plan y tareas adaptadas a su stack
+    role: tech_lead
+    hours: 32
+  - name: Configuración de agentes, reglas del repositorio y permisos
+    role: ai_engineer
+    hours: 40
+  - name: Revisión automática de PRs en CI contra la spec
+    role: devops
+    hours: 24
+  - name: Taller práctico con el equipo sobre una funcionalidad real
+    role: tech_lead
+    hours: 16
+  - name: Acompañamiento en los dos primeros sprints
+    role: tech_lead
+    hours: 48
+  - name: Métricas de adopción y retrospectiva final
+    role: project_manager
+    hours: 16
+team:
+  - role: tech_lead
+    dedication: 0.5
+  - role: ai_engineer
+    dedication: 0.3
+  - role: devops
+    dedication: 0.2
+  - role: project_manager
+    dedication: 0.1
+duration_weeks:
+  min: 6
+  max: 8
+notes: |
+  Proyecto pequeño en horas pero largo en calendario: el acompañamiento sigue el ritmo de sus sprints de dos
+  semanas. No incluye desarrollo de funcionalidades del cliente; el equipo las construye durante el
+  acompañamiento.

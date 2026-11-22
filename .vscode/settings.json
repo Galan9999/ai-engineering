@@ -1,0 +1,10 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/estimador-cag/.venv/bin/python",
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.extraPaths": ["${workspaceFolder}/estimador-cag"],
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }
+  }
+}

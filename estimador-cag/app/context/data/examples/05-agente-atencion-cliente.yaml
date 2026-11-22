@@ -1,0 +1,58 @@
+id: agente-atencion-cliente
+title: Agente de IA de atención al cliente para una empresa de alquiler de autocaravanas
+sector: turismo
+meeting_summary: |
+  Empresa de alquiler de autocaravanas que recibe cientos de consultas por correo y teléfono en temporada
+  alta, casi todas repetidas: condiciones de alquiler, qué incluye cada vehículo, cambiar fechas o recoger
+  en otra oficina. Quieren un chat en su web con un agente de IA que responda con sus condiciones reales,
+  consulte la reserva del cliente y pueda cambiar fechas si hay disponibilidad. Si el agente no sabe algo o
+  el cliente se enfada, debe pasar la conversación a una persona. Les preocupa que se invente precios.
+tasks:
+  - name: Discovery de casos de uso, tono y límites del agente
+    role: product_designer
+    hours: 30
+  - name: Base de conocimiento con condiciones y FAQ, y búsqueda semántica
+    role: ai_engineer
+    hours: 70
+  - name: Agente con herramientas (consultar reserva, cambiar fechas, abrir incidencia)
+    role: ai_engineer
+    hours: 120
+  - name: API de herramientas sobre el sistema de reservas
+    role: backend
+    hours: 80
+  - name: Widget de chat en la web y paso a agente humano
+    role: frontend
+    hours: 70
+  - name: Guardrails, conjunto de evaluación y pruebas de conversaciones límite
+    role: ai_engineer
+    hours: 60
+  - name: Trazas, coste por conversación y alertas
+    role: devops
+    hours: 30
+  - name: Pruebas funcionales de conversaciones
+    role: qa
+    hours: 40
+  - name: Gestión del proyecto y revisión de respuestas con el cliente
+    role: project_manager
+    hours: 40
+team:
+  - role: product_designer
+    dedication: 0.3
+  - role: ai_engineer
+  - role: backend
+    dedication: 0.75
+  - role: frontend
+    dedication: 0.5
+  - role: devops
+    dedication: 0.2
+  - role: qa
+    dedication: 0.4
+  - role: project_manager
+    dedication: 0.3
+duration_weeks:
+  min: 7
+  max: 9
+notes: |
+  El cuello de botella es el AI engineer: el plazo lo marcan sus 250 horas. El coste de uso del modelo se
+  factura aparte y se estima con las trazas del piloto. Precios y disponibilidad salen siempre de las
+  herramientas, nunca del modelo.

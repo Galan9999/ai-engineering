@@ -1,0 +1,56 @@
+id: app-reservas-veterinaria
+title: App móvil de citas para una cadena de clínicas veterinarias
+sector: salud animal
+meeting_summary: |
+  Cadena de 12 clínicas veterinarias que hoy gestiona las citas por teléfono. Quieren una app para iOS y
+  Android donde el cliente registre a sus mascotas, reserve cita en su clínica, reciba recordatorios de
+  vacunas y consulte el historial de visitas. Cada clínica necesita un panel web para ver la agenda del día,
+  bloquear huecos y marcar las citas atendidas. Ya tienen la identidad de marca; el diseño de la app está
+  por hacer. Querrían publicarla en las stores antes de la campaña de vacunación de primavera.
+tasks:
+  - name: Discovery y flujos de usuario
+    role: product_designer
+    hours: 40
+  - name: Diseño UI de la app y del panel
+    role: product_designer
+    hours: 60
+  - name: App móvil (registro, mascotas, reserva de citas, historial)
+    role: mobile
+    hours: 180
+  - name: Notificaciones push y recordatorios de vacunas
+    role: mobile
+    hours: 40
+  - name: API de citas, disponibilidad por clínica y autenticación
+    role: backend
+    hours: 160
+  - name: Panel web de agenda para las clínicas
+    role: frontend
+    hours: 80
+  - name: Pruebas funcionales en dispositivos
+    role: qa
+    hours: 60
+  - name: Infraestructura y publicación en App Store y Google Play
+    role: devops
+    hours: 20
+  - name: Gestión del proyecto y demos con el cliente
+    role: project_manager
+    hours: 50
+team:
+  - role: product_designer
+    dedication: 0.5
+  - role: mobile
+  - role: backend
+  - role: frontend
+    dedication: 0.5
+  - role: qa
+    dedication: 0.5
+  - role: devops
+    dedication: 0.2
+  - role: project_manager
+    dedication: 0.3
+duration_weeks:
+  min: 6
+  max: 8
+notes: |
+  El plazo de la campaña de primavera manda: la reserva de citas y los recordatorios van en la primera
+  versión; pagos online y videoconsulta quedan fuera y se presupuestarán aparte.

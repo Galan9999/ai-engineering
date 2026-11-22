@@ -1,0 +1,47 @@
+id: integracion-tienda-erp
+title: Integración entre la tienda online y el ERP de un fabricante de muebles
+sector: comercio electrónico
+meeting_summary: |
+  Fabricante de muebles que vende en su tienda online y gestiona pedidos, stock y facturación en su ERP.
+  Hoy un empleado copia a mano los pedidos de la tienda al ERP cada mañana y el stock de la web va con un
+  día de retraso. Quieren que los pedidos lleguen solos al ERP, que el stock se actualice en la web en
+  menos de cinco minutos y que alguien reciba un aviso si una sincronización falla. El ERP expone una API
+  REST documentada; la tienda permite webhooks. No hay cambios visuales en la web.
+tasks:
+  - name: Análisis de ambas APIs y mapeo de datos (pedidos, stock, clientes)
+    role: backend
+    hours: 40
+  - name: Conector con el ERP para pedidos, stock y clientes
+    role: backend
+    hours: 120
+  - name: Webhooks de la tienda y cola de reintentos
+    role: backend
+    hours: 60
+  - name: Panel de monitorización de sincronizaciones y alertas
+    role: frontend
+    hours: 40
+  - name: Infraestructura, colas y pipeline de despliegue
+    role: devops
+    hours: 30
+  - name: Pruebas de integración con datos de prueba del ERP
+    role: qa
+    hours: 50
+  - name: Gestión del proyecto y coordinación con el proveedor del ERP
+    role: project_manager
+    hours: 25
+team:
+  - role: backend
+  - role: frontend
+    dedication: 0.3
+  - role: devops
+    dedication: 0.3
+  - role: qa
+    dedication: 0.4
+  - role: project_manager
+    dedication: 0.2
+duration_weeks:
+  min: 5
+  max: 7
+notes: |
+  Depende de que el proveedor del ERP dé acceso a un entorno de pruebas en la primera semana; si se
+  retrasa, el plazo se mueve lo mismo. No incluye diseño porque no hay interfaz nueva para el cliente.

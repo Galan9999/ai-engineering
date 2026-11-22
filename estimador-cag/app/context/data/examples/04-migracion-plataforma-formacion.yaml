@@ -1,0 +1,54 @@
+id: migracion-plataforma-formacion
+title: Migración de una plataforma de formación online a la nube
+sector: educación
+meeting_summary: |
+  Academia online con 40.000 alumnos y una plataforma PHP de hace diez años en un servidor propio que se
+  cae en cada periodo de matrícula. Quieren migrarla a la nube sin perder datos de alumnos, cursos,
+  progreso ni historial de pagos, y aprovechar para separar el frontend de una API. La plataforma no puede
+  estar parada más de una noche y necesitan poder volver atrás si algo sale mal. El diseño actual se
+  mantiene; el proveedor que la hizo ya no da soporte y apenas hay documentación.
+tasks:
+  - name: Auditoría del sistema actual y plan de migración por fases
+    role: tech_lead
+    hours: 40
+  - name: Nuevo modelo de datos y scripts de migración con validación de integridad
+    role: data_engineer
+    hours: 120
+  - name: Reescritura de cursos, matrículas y pagos sobre la nueva API
+    role: backend
+    hours: 280
+  - name: Adaptación del frontend actual a la nueva API
+    role: frontend
+    hours: 120
+  - name: Infraestructura cloud, entornos y pipeline de despliegue
+    role: devops
+    hours: 80
+  - name: Ensayos de migración con copia de producción y pruebas de regresión
+    role: qa
+    hours: 120
+  - name: Noche de corte, convivencia y plan de vuelta atrás
+    role: devops
+    hours: 30
+  - name: Gestión del proyecto y comunicación con alumnos
+    role: project_manager
+    hours: 70
+team:
+  - role: tech_lead
+    dedication: 0.2
+  - role: data_engineer
+    dedication: 0.75
+  - role: backend
+  - role: frontend
+    dedication: 0.75
+  - role: devops
+    dedication: 0.5
+  - role: qa
+    dedication: 0.75
+  - role: project_manager
+    dedication: 0.3
+duration_weeks:
+  min: 8
+  max: 10
+notes: |
+  Sin documentación, la auditoría puede destapar módulos ocultos: se reserva la primera semana para ello y
+  el presupuesto se revisa al cerrarla. Se hacen al menos dos ensayos completos de migración antes del corte.

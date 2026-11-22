@@ -1,0 +1,13 @@
+currency: EUR
+hours_per_week: 35
+rates:
+  project_manager: 55
+  tech_lead: 80
+  product_designer: 50
+  frontend: 60
+  backend: 65
+  mobile: 65
+  data_engineer: 65
+  ai_engineer: 75
+  qa: 45
+  devops: 70
