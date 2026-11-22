@@ -1,7 +1,9 @@
 import asyncio
+import inspect
 from types import SimpleNamespace
 from typing import Any
 
+from anthropic.resources.messages import AsyncMessages
 from anthropic.types import ToolUseBlock
 
 from app.services.providers import AnthropicProvider, GenerationParams, ToolSpec
@@ -53,7 +55,7 @@ def test_anthropic_request_caches_the_system_prompt_and_forces_the_tool(monkeypa
     ]
     assert messages.kwargs["messages"] == [{"role": "user", "content": "USER"}]
     assert messages.kwargs["max_tokens"] == 3000
-    assert messages.kwargs["temperature"] == 0.3
+    assert "temperature" not in messages.kwargs
 
 
 def test_anthropic_usage_counts_cached_tokens_in_the_input(monkeypatch):
@@ -63,3 +65,10 @@ def test_anthropic_usage_counts_cached_tokens_in_the_input(monkeypatch):
     assert result.input_tokens == 4100
     assert result.cached_input_tokens == 4000
     assert result.cache_write_tokens == 0
+
+
+def test_anthropic_request_only_uses_arguments_the_sdk_accepts(monkeypatch):
+    _, messages = call(monkeypatch)
+
+    accepted = set(inspect.signature(AsyncMessages.create).parameters)
+    assert set(messages.kwargs) <= accepted

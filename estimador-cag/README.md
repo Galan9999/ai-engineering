@@ -52,6 +52,12 @@ app/
 └── context/                 modelos, loader y datos YAML (ejemplos y tarifas)
 ```
 
+## Decisiones
+
+- **Sin `temperature` en Anthropic.** El SDK de Anthropic instalado ya no acepta el parámetro y los modelos
+  actuales lo rechazan, así que el adapter de Anthropic solo envía `max_tokens`. `GenerationParams.temperature`
+  se aplica en OpenAI.
+
 ## Mejoras pendientes
 
 - **Productividad con IA.** Los ejemplos reflejan horas de proyectos hechos sin agentes de IA y hoy se

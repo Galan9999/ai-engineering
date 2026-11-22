@@ -139,9 +139,7 @@ class AnthropicProvider:
         )
 
     async def _create(self, system: str, user: str, tool: ToolSpec, params: GenerationParams):
-        optional = {} if params.temperature is None else {"temperature": params.temperature}
         return await self._client.messages.create(
-            **optional,
             model=self._model,
             max_tokens=params.max_tokens,
             system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
