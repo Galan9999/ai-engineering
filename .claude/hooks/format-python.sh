@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# PostToolUse (Edit|Write): formatea con ruff el .py que Claude acaba de tocar.
-# Claude Code pasa por stdin un JSON con tool_input.file_path.
-# uv busca el pyproject.toml más cercano al fichero (p. ej. estimador-cag/).
 set -euo pipefail
 
 file=$(jq -r '.tool_input.file_path // empty')
