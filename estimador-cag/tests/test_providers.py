@@ -43,12 +43,14 @@ def call(monkeypatch) -> tuple[Any, FakeMessages]:
     return result, messages
 
 
-def test_anthropic_request_caches_prompt_and_forces_the_tool(monkeypatch):
+def test_anthropic_request_caches_the_system_prompt_and_forces_the_tool(monkeypatch):
     _, messages = call(monkeypatch)
 
-    assert messages.kwargs["cache_control"] == {"type": "ephemeral"}
+    assert "cache_control" not in messages.kwargs
     assert messages.kwargs["tool_choice"] == {"type": "tool", "name": "submit_estimation"}
-    assert messages.kwargs["system"] == "SYSTEM"
+    assert messages.kwargs["system"] == [
+        {"type": "text", "text": "SYSTEM", "cache_control": {"type": "ephemeral"}}
+    ]
     assert messages.kwargs["messages"] == [{"role": "user", "content": "USER"}]
     assert messages.kwargs["max_tokens"] == 3000
     assert "temperature" not in messages.kwargs

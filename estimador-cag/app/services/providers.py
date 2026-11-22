@@ -142,7 +142,7 @@ class AnthropicProvider:
         return await self._client.messages.create(
             model=self._model,
             max_tokens=params.max_tokens,
-            system=system,
+            system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
             messages=[{"role": "user", "content": user}],
             tools=[
                 {
@@ -152,7 +152,6 @@ class AnthropicProvider:
                 }
             ],
             tool_choice={"type": "tool", "name": tool.name},
-            cache_control={"type": "ephemeral"},
         )
 
 
