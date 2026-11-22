@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 
+from app.config import DEFAULT_MODELS
 from app.services.pricing import ModelPrice, PricingTable, get_pricing
 
 PRICE = ModelPrice(
@@ -13,8 +14,9 @@ PRICE = ModelPrice(
 )
 
 
-def test_real_pricing_file_loads_and_covers_configured_default_model():
-    assert get_pricing().price_for("gpt-4o-mini") is not None
+def test_real_pricing_file_loads_and_covers_the_default_models():
+    for model in DEFAULT_MODELS.values():
+        assert get_pricing().price_for(model) is not None
 
 
 @pytest.mark.parametrize(
