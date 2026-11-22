@@ -62,3 +62,8 @@ app/
   respuesta lo devuelve en `warnings`. Propuesta: cuando haya avisos, reenviar al modelo su estimación con
   los avisos para que la corrija (máximo un reintento), decidiendo él si añade personas o alarga el plazo.
   Es el patrón validar → feedback → reintentar: el código comprueba y el modelo corrige.
+- **Robustez del adapter.** Pendientes de la revisión de código: dar a los clientes de OpenAI y Anthropic un
+  timeout corto (hoy usan el del SDK, 10 minutos con reintentos) y devolver `502` si OpenAI responde sin
+  `choices`; enviar `max_completion_tokens` en lugar de `max_tokens`, para que funcionen los modelos de
+  razonamiento de OpenAI; y mostrar las horas con un decimal en el Markdown, para que las filas sumen el
+  total.
